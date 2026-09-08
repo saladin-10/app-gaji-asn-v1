@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Gaji ASN - Candipuro</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body { 
+      background-image: url('https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=1920&auto=format&fit=crop'); 
+      background-color: #f4f6f9; background-size: cover; background-repeat: no-repeat;    
+      background-attachment: fixed; background-position: center; min-height: 100vh;               
+      font-family: 'Lora', serif; padding: 40px 20px; 
+    }
+    
+    .card-box { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .section-title { letter-spacing: 0.25px; font-size: 0.9rem; }
+    .table-header-col { background-color: #f8f9fa !important; font-weight: bold; width: 35%; color: #050505; }
+    #resultArea .table-responsive { margin-top: 25px !important; }
+    #resultArea .table, #resultArea .table th, #resultArea .table td { border: 1px solid #000000 !important; }
+
+    @media screen and (min-width: 769px) {
+      .container-fluid { max-width: 800px; }
+      #resultArea .card-box { padding: 30px 40px 50px; width: 100%; max-width: 800px; margin: 0 auto; }
+    }
+    @media screen and (max-width: 768px) {
+      body { padding: 20px 10px; }
+      #resultArea .card-box { padding: 15px !important; width: 100% !important; }
+      #resultArea .table { font-size: 12px !important; }
+    }
+      
+    /* === PENGATURAN CETAK PDF TANPA WATERMARK === */
+    @media print {
+      @page { 
+        size: 215mm 330mm; /* F4 Portrait */
+        margin: 15mm 15mm 15mm 15mm; 
+        @top-left { content: ""; } @top-center { content: ""; } @top-right { content: ""; }
+        @bottom-left { content: ""; } @bottom-center { content: ""; } @bottom-right { content: ""; }
+      }
+      body { background-color: #fff; padding: 0 !important; margin: 0 !important; font-family: 'NCR', 'Courier New', monospace !important; }
+      .no-print, #loginArea, #dashboardArea { display: none !important; }
+      .print-page { page-break-after: always; page-break-inside: avoid; padding: 0 !important; margin: 0 auto !important; width: 100%; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .print-page:last-child { page-break-after: auto !important; }
+      .card-box { box-shadow: none !important; padding: 0 !important; margin: 0 !important; border: none !important; }
+      .table { width: 100% !important; border: 2px solid #000 !important; margin-bottom: 0 !important; }
+      .table td, .table th { border: 1px solid #000 !important; font-size: 13px !important; padding: 6px 8px !important; }
+      .section-title { font-size: 10px !important; padding: 3px !important; }
+      h4.text-center { font-size: 14px !important; margin-bottom: 15px !important; }
+      .bg-success { background-color: #198754 !important; color: #fff !important; }
+      .bg-danger { background-color: #dc3545 !important; color: #fff !important; }
+      .bg-warning { background-color: #ffc107 !important; color: #000 !important; }
+      .bg-primary { background-color: #0d6efd !important; color: #fff !important; }
+      .bg-light { background-color: #f8f9fa !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AREA LOGIN -->
+  <div id="loginArea" class="container-fluid" style="display: none; max-width: 450px; margin-top: 5vh;">
+    <div class="card-box text-center">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Logo_Kementerian_Pendidikan_dan_Kebudayaan_Republik_Indonesia.png/600px-Logo_Kementerian_Pendidikan_dan_Kebudayaan_Republik_Indonesia.png" width="80" class="mb-3">
+      <h4 class="fw-bold mb-1">PORTAL ASN</h4>
+      <p class="text-muted mb-4">Korwil Dikbud Candipuro</p>
+      
+      <div class="mb-3 text-start">
+        <label class="fw-bold">NIP (Username)</label>
+        <input type="text" id="inputNip" class="form-control" placeholder="Masukkan NIP" required>
+      </div>
+      <div class="mb-4 text-start">
+        <label class="fw-bold">Password</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Masukkan NIP" required>
+      </div>
+      <button onclick="doLogin()" class="btn w-100 fw-bold" style="background-color: #000; color: #FFD700; border-radius: 8px; padding: 10px;">MASUK</button>
+      <div id="loginMessage" class="alert alert-danger mt-3" style="display: none; font-size: 14px;"></div>
+    </div>
+  </div>
+
+  <!-- AREA DASHBOARD -->
+  <div id="dashboardArea" class="container-fluid no-print" style="display: none;">
+    <div class="card-box">
+      <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+          <h5 class="fw-bold mb-1">SELAMAT DATANG</h5>
+          <span class="badge bg-dark" style="font-size: 14px; color: #FFD700 !important;">NIP: <span id="userNipDisplay"></span></span>
+        </div>
+        <button onclick="doLogout()" class="btn btn-sm btn-outline-danger fw-bold">Logout</button>
+      </div>
+
+      <h3 class="text-center text-black fw-bold mb-4" style="line-height: 1.5; margin-top: 20px;"> 
+        <div class="mb-2" style="font-size: 1.3rem;">CETAK SLIP GAJI ASN 2026</div>
+      </h3>
+      
+      <div class="row justify-content-center mb-3">
+        <div class="col-md-8 text-center">
+          <label class="form-label fw-bold">Pilih Bulan Gaji</label>
+          <select id="sheetSelect" class="form-select form-select-lg text-center" onchange="clearResult()">
+            <option value="">-- Memuat Bulan --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mt-4">
+        <div class="col-md-4 col-6">
+          <button id="btnSearch" class="btn w-100 fw-bold" onclick="viewSalary()" style="background-color: #050505; color: #FFD700; padding: 10px;">Lihat Slip</button>
+        </div>     
+        <div class="col-md-4 col-6">
+          <button id="btnPrint" class="btn w-100 fw-bold" onclick="window.print()" style="background-color: #000; color: #FFD700; padding: 10px;" disabled>🖨️ Cetak PDF</button>
+        </div>
+      </div>
+      
+      <div id="loading" class="text-center mt-4" style="display: none; color: #00008B; font-weight: bold;">
+        <div class="spinner-border spinner-border-sm"></div> <span id="loadingText">LOADING...</span> 
+      </div>
+      <div id="message" class="alert alert-danger mt-3 text-center" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- AREA HASIL RENDER (SLIP GAJI) -->
+  <div id="resultArea" class="mt-2"></div>
+
+  <script>
+    // MASUKKAN URL WEB APP API ANDA DI SINI (Wajib diapit tanda kutip)
+    const API_URL = "https://script.google.com/macros/s/AKfycbwO3ZNDmC1g-3ZKjJbril5bRZ8aE32y0uSiTvfMN2vf0hJkqLfZX7TzO3VXYOFSUQ/exec";
+    
+    // Mengecek apakah ASN sudah login sebelumnya saat halaman dimuat
+    $(document).ready(function() {
+      if(sessionStorage.getItem("loggedInNip")) {
+        showDashboard();
+      } else {
+        showLogin();
+      }
+    });
+
+    // SISTEM TAMPILAN
+    function showLogin() {
+      document.getElementById('dashboardArea').style.display = 'none';
+      document.getElementById('resultArea').innerHTML = '';
+      document.getElementById('loginArea').style.display = 'block';
+    }
+
+    function showDashboard() {
+      document.getElementById('loginArea').style.display = 'none';
+      document.getElementById('userNipDisplay').innerText = sessionStorage.getItem("loggedInNip");
+      document.getElementById('dashboardArea').style.display = 'block';
+      loadMonths();
+    }
+
+    // FUNGSI LOGIN
+    function doLogin() {
+      var nip = document.getElementById('inputNip').value.trim();
+      var password = document.getElementById('inputPassword').value.trim();
+      var msgBox = document.getElementById('loginMessage');
+      
+      if(!nip || !password) {
+        msgBox.innerText = "NIP dan Password harus diisi!";
+        msgBox.style.display = 'block'; return;
+      }
+
+      msgBox.style.display = 'none';
+      var btn = event.target;
+      btn.innerText = "Memeriksa..."; btn.disabled = true;
+
+      fetch(API_URL + "?action=login&nip=" + encodeURIComponent(nip) + "&password=" + encodeURIComponent(password))
+        .then(res => res.json())
+        .then(data => {
+          btn.innerText = "MASUK"; btn.disabled = false;
+          if (data.success) {
+            sessionStorage.setItem("loggedInNip", data.nip); // Simpan sesi
+            showDashboard();
+          } else {
+            msgBox.innerText = data.error; msgBox.style.display = 'block';
+          }
+        })
+        .catch(err => {
+          btn.innerText = "MASUK"; btn.disabled = false;
+          msgBox.innerText = "Terjadi kesalahan server."; msgBox.style.display = 'block';
+        });
+    }
+
+    function doLogout() {
+      sessionStorage.removeItem("loggedInNip");
+      document.getElementById('inputNip').value = '';
+      document.getElementById('inputPassword').value = '';
+      showLogin();
+    }
+
+    // FUNGSI AMBIL DAFTAR BULAN
+    function loadMonths() {
+      fetch(API_URL + "?action=getInitialData")
+        .then(res => res.json())
+        .then(data => {
+          var select = document.getElementById('sheetSelect');
+          select.innerHTML = '<option value="">-- Pilih Bulan --</option>';
+          if(data.sheets) {
+            data.sheets.forEach(function(s) { select.add(new Option(s, s)); });
+          }
+        });
+    }
+
+    function clearResult() {
+      document.getElementById('resultArea').innerHTML = '';
+      document.getElementById('btnPrint').disabled = true;
+      hideMessage();
+    }
+
+    // FUNGSI TAMPILKAN SLIP GAJI PRIBADI
+    function viewSalary() {
+      var sheet = document.getElementById('sheetSelect').value;
+      var nip = sessionStorage.getItem("loggedInNip");
+
+      if (!sheet) { showMessage("Silakan pilih bulan terlebih dahulu."); return; }
+
+      document.getElementById('loadingText').innerText = "MENARIK DATA...";
+      document.getElementById('loading').style.display = 'block';
+      clearResult();
+
+      fetch(API_URL + "?action=getSalary&sheet=" + encodeURIComponent(sheet) + "&nip=" + encodeURIComponent(nip))
+        .then(res => res.json())
+        .then(data => renderTables(data, sheet))
+        .catch(err => showMessage("Gagal menampilkan data dari server."));
+    }
+
+    function renderTables(data, sheetName) {
+      document.getElementById('loading').style.display = 'none';
+      if (data.error) return showMessage(data.error);
+
+      document.getElementById('btnPrint').disabled = false;
+      var html = '';
+      
+      // Karena hanya 1 NIP, data baris pasti hanya 1
+      var rowData = data.rows[0]; 
+
+      html += '<div class="print-page container-fluid d-flex justify-content-center">';
+      html += '<div class="w-100 card-box bg-white p-0">';
+      html += '<h4 class="text-center fw-bold mb-3">Rincian Gaji Bulan ' + sheetName.toUpperCase() + ' <br> Korwil Dikbud Candipuro</h4>';
+      html += '<div class="table-responsive" style="margin-top:0 !important;">';
+      html += '<table class="table table-bordered table-hover align-middle mb-0"><tbody>';
+
+      for (var c = 0; c < data.headers.length; c++) {
+        if (c === 3) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #98FF98; font-weight: bold; color: #006400;">PENGHASILAN</td></tr>';
+        if (c === 4) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #FFD8A8; font-weight: bold; color: #FF7518;">POTONGAN-POTONGAN</td></tr>';
+        if (c === 14) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #89CFF0; font-weight: bold; color: #00008B;">JUMLAH POTONGAN</td></tr>';
+        if (c === 15) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #D3D3D3; font-weight: bold; color: #050505;">SISA GAJI</td></tr>';
+
+        html += '<tr><th class="table-header-col bg-light">' + (data.headers[c] || 'Kolom '+(c+1)) + '</th>';
+        
+        var isAccounting = (c >= 3 && c <= 16); 
+        var alignClass = isAccounting ? 'text-end fw-semibold' : 'text-start';
+
+        html += '<td class="' + alignClass + '">' + (rowData[c] || '-') + '</td>';
+        html += '</tr>';
+      }
+      html += '</tbody></table></div></div></div>';
+      
+      document.getElementById('resultArea').innerHTML = html;
+    }
+
+    function showMessage(msg) {
+      document.getElementById('loading').style.display = 'none';
+      var msgBox = document.getElementById('message');
+      msgBox.innerText = msg; msgBox.style.display = 'block';
+    }
+    function hideMessage() { document.getElementById('message').style.display = 'none'; }
+  </script>
+</body>
+</html>
