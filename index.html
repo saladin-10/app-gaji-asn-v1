@@ -76,25 +76,25 @@
   <!-- AREA LOGIN -->
   <div id="loginArea" class="container-fluid" style="display: none; max-width: 480px; margin-top: 5vh;">
     <div class="card-box text-center">
-      <img src="https://visitlumajang.com/download-logo-city-branding-lumajang-eksotik/2216" width="80" class="mb-3">
-      <h4 class="fw-bold mb-1">PORTAL ASN</h4>
-      <p class="text-muted mb-4">Korwil Dikbud Candipuro</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Lambang_Kabupaten_Lumajang.png?utm_source=id.wikipedia.org&utm_campaign=index&utm_content=original" width="80" class="mb-3">
+      <h4 class="fw-bold mb-1">DATA GAJI ASN</h4>
+      <p class="text-muted mb-4">KORWIL DIKBUD CANDIPURO</p>
       
       <div class="row mb-3 align-items-center text-start">
         <label class="col-4 col-form-label fw-bold" style="font-size: 0.95rem;">Username</label>
         <div class="col-8">
-          <input type="text" id="inputNip" class="form-control" placeholder="Masukkan NIP" required>
+          <input type="text" id="inputNip" class="form-control" placeholder="Masukkan Username Anda..." required>
         </div>
       </div>
       
       <div class="row mb-4 align-items-center text-start">
         <label class="col-4 col-form-label fw-bold" style="font-size: 0.95rem;">Password</label>
         <div class="col-8">
-          <input type="password" id="inputPassword" class="form-control" placeholder="Masukkan NIP" required>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Masukkan Password Anda..." required>
         </div>
       </div>
       
-      <button onclick="doLogin()" class="btn w-100 fw-bold mt-2" style="background-color: #000; color: #FFD700; border-radius: 8px; padding: 10px;">MASUK</button>
+      <button onclick="doLogin()" class="btn w-100 fw-bold mt-2" style="background-color: #000; color: #FFD700; border-radius: 8px; padding: 10px;">LOGIN</button>
       <div id="loginMessage" class="alert alert-danger mt-3" style="display: none; font-size: 14px;"></div>
     </div>
   </div>
@@ -113,14 +113,14 @@
       </div>
 
       <h5 class="text-center text-black fw-bold mb-4 mt-4" style="line-height: 1.5;"> 
-        CETAK SLIP GAJI ASN 2026
+        VIEW DATA GAJI
       </h5>
       
       <div class="row justify-content-center mb-3">
         <div class="col-md-10 text-center">
           <label class="form-label fw-bold" style="font-size: 0.95rem;">Pilih Bulan Gaji</label>
           <select id="sheetSelect" class="form-select text-center" onchange="clearResult()">
-            <option value="">-- Memuat Bulan --</option>
+            <option value="">-- LOADING... --</option>
           </select>
         </div>
       </div>
