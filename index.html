@@ -184,7 +184,7 @@
 
       msgBox.style.display = 'none';
       var btn = event.target;
-      btn.innerText = "Memeriksa..."; btn.disabled = true;
+      btn.innerText = "LOADING..."; btn.disabled = true;
 
       fetch(API_URL + "?action=login&nip=" + encodeURIComponent(nip) + "&password=" + encodeURIComponent(password))
         .then(res => res.json())
