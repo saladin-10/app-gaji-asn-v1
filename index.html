@@ -127,10 +127,10 @@
 
       <div class="row justify-content-center mt-4">
         <div class="col-md-6 col-6">
-          <button id="btnSearch" class="btn w-100 fw-bold" onclick="viewSalary()" style="background-color: #050505; color: #FFD700; padding: 8px;">Lihat Slip</button>
+          <button id="btnSearch" class="btn w-100 fw-bold" onclick="viewSalary()" style="background-color: #050505; color: #FFD700; padding: 8px;">VIEW DATA</button>
         </div>     
         <div class="col-md-6 col-6">
-          <button id="btnPrint" class="btn w-100 fw-bold" onclick="window.print()" style="background-color: #000; color: #FFD700; padding: 8px;" disabled>🖨️ Cetak PDF</button>
+          <button id="btnPrint" class="btn w-100 fw-bold" onclick="window.print()" style="background-color: #000; color: #FFD700; padding: 8px;" disabled>🖨️ CETAK PDF</button>
         </div>
       </div>
       
@@ -236,7 +236,7 @@
 
       if (!sheet) { showMessage("Silakan pilih bulan terlebih dahulu."); return; }
 
-      document.getElementById('loadingText').innerText = "MENARIK DATA...";
+      document.getElementById('loadingText').innerText = "LOADING DATA...";
       document.getElementById('loading').style.display = 'block';
       clearResult();
 
@@ -257,7 +257,7 @@
       html += '<div class="print-page container-fluid d-flex justify-content-center">';
       // Menggunakan class p-3 (padding) agar hasil tabel tidak menempel tepi layar di web preview
       html += '<div class="w-100 card-box bg-white p-3 p-md-4">'; 
-      html += '<h4 class="text-center fw-bold mb-3">Rincian Gaji Bulan ' + sheetName.toUpperCase() + ' <br> Korwil Dikbud Candipuro</h4>';
+      html += '<h4 class="text-center fw-bold mb-3">DAFTAR RINCIAN GAJI ' + sheetName.toUpperCase() + ' <br> KORWIL DIKBUD KECAMATAN CANDIPURO</h4>';
       html += '<div class="table-responsive" style="margin-top:0 !important;">';
       html += '<table class="table table-bordered table-hover align-middle mb-0"><tbody>';
 
