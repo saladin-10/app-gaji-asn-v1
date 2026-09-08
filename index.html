@@ -63,18 +63,18 @@
   <div id="loginArea" class="container-fluid" style="display: none; max-width: 450px; margin-top: 5vh;">
     <div class="card-box text-center">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Logo_Kementerian_Pendidikan_dan_Kebudayaan_Republik_Indonesia.png/600px-Logo_Kementerian_Pendidikan_dan_Kebudayaan_Republik_Indonesia.png" width="80" class="mb-3">
-      <h4 class="fw-bold mb-1">PORTAL ASN</h4>
-      <p class="text-muted mb-4">Korwil Dikbud Candipuro</p>
+      <h4 class="fw-bold mb-1">DATA GAJI ASN</h4>
+      <p class="text-muted mb-4">KKORWIL DIKBUD CANDIPURO</p>
       
       <div class="mb-3 text-start">
-        <label class="fw-bold">NIP (Username)</label>
-        <input type="text" id="inputNip" class="form-control" placeholder="Masukkan NIP" required>
+        <label class="fw-bold">USERNAME</label>
+        <input type="text" id="inputNip" class="form-control" placeholder="Masukkan Username Anda..." required>
       </div>
       <div class="mb-4 text-start">
-        <label class="fw-bold">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Masukkan NIP" required>
+        <label class="fw-bold">PASSWORD</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Masukkan Password Anda..." required>
       </div>
-      <button onclick="doLogin()" class="btn w-100 fw-bold" style="background-color: #000; color: #FFD700; border-radius: 8px; padding: 10px;">MASUK</button>
+      <button onclick="doLogin()" class="btn w-100 fw-bold" style="background-color: #000; color: #FFD700; border-radius: 8px; padding: 10px;">LOGIN</button>
       <div id="loginMessage" class="alert alert-danger mt-3" style="display: none; font-size: 14px;"></div>
     </div>
   </div>
@@ -91,14 +91,14 @@
       </div>
 
       <h3 class="text-center text-black fw-bold mb-4" style="line-height: 1.5; margin-top: 20px;"> 
-        <div class="mb-2" style="font-size: 1.3rem;">CETAK SLIP GAJI ASN 2026</div>
+        <div class="mb-2" style="font-size: 1.3rem;">DATA RINCIAN GAJI ASN 2026</div>
       </h3>
       
       <div class="row justify-content-center mb-3">
         <div class="col-md-8 text-center">
           <label class="form-label fw-bold">Pilih Bulan Gaji</label>
           <select id="sheetSelect" class="form-select form-select-lg text-center" onchange="clearResult()">
-            <option value="">-- Memuat Bulan --</option>
+            <option value="">-- LOADING... --</option>
           </select>
         </div>
       </div>
@@ -162,7 +162,7 @@
 
       msgBox.style.display = 'none';
       var btn = event.target;
-      btn.innerText = "Memeriksa..."; btn.disabled = true;
+      btn.innerText = "LOADING..."; btn.disabled = true;
 
       fetch(API_URL + "?action=login&nip=" + encodeURIComponent(nip) + "&password=" + encodeURIComponent(password))
         .then(res => res.json())
@@ -241,9 +241,9 @@
       html += '<table class="table table-bordered table-hover align-middle mb-0"><tbody>';
 
       for (var c = 0; c < data.headers.length; c++) {
-        if (c === 3) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #98FF98; font-weight: bold; color: #006400;">PENGHASILAN</td></tr>';
-        if (c === 4) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #FFD8A8; font-weight: bold; color: #FF7518;">POTONGAN-POTONGAN</td></tr>';
-        if (c === 14) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #89CFF0; font-weight: bold; color: #00008B;">JUMLAH POTONGAN</td></tr>';
+        if (c === 3) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #D3D3D3; font-weight: bold; color: #050505;">PENGHASILAN</td></tr>';
+        if (c === 4) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #FFD3D3D3D8A8; font-weight: bold; color: #050505;">POTONGAN-POTONGAN</td></tr>';
+        if (c === 14) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #D3D3D3; font-weight: bold; color: #050505;">JUMLAH POTONGAN</td></tr>';
         if (c === 15) html += '<tr><td colspan="2" class="text-center section-title" style="background-color: #D3D3D3; font-weight: bold; color: #050505;">SISA GAJI</td></tr>';
 
         html += '<tr><th class="table-header-col bg-light">' + (data.headers[c] || 'Kolom '+(c+1)) + '</th>';
